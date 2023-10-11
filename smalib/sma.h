@@ -26,6 +26,14 @@
 #include <random>
 
 namespace sma {
+    /**
+     * Функция простого скользящего среднего (Simple Moving Average, SMA)
+     * https://en.wikipedia.org/wiki/Moving_average#Simple_moving_average
+     * @tparam T тип данных только float и double
+     * @param data входной массив чисел
+     * @param windowSize размер окна для вычисления SMA
+     * @return vector длиной data.size() - windowSize + 1 с расчитанными средними значениями по окну
+     */
     template<std::floating_point T>
     std::vector<T> simpleMovingAverage(std::span<T> data, int windowSize) {
         auto smaArr = std::vector<T>(data.size() - windowSize + 1);
@@ -41,8 +49,13 @@ namespace sma {
         return smaArr;
     }
 
+    /**
+     * Функция отрисовки массива
+     * @tparam T тип данных только float и double
+     * @param arr массив для отрисовки
+     */
     template<std::floating_point T>
-    void printArr(std::vector<T> arr) {
+    void printArr(std::span<T> arr) {
         if (arr.begin() == arr.end()) {
             std::cout << "Vector is empty\n";
             return;
@@ -52,6 +65,12 @@ namespace sma {
         std::cout << '\n';
     }
 
+    /**
+     * Функция генерации массива
+     * @tparam T тип данных только float и double
+     * @param len длина массива
+     * @return vector длиной len со случайными значениями
+     */
     template<std::floating_point T>
     std::vector<T> generateArr(int len) {
         auto arr = std::vector<T>(len);

@@ -11,12 +11,13 @@ int main() {
         auto arr = std::vector<double>(arrSize);
         std::iota(arr.begin(), arr.end(), 0);
         auto average = sma::simpleMovingAverage<double>(arr, windowSize);
-        sma::printArr(arr);
-        sma::printArr(average);
+        sma::printArr<double>(arr);
+        sma::printArr<double>(average);
         auto arrf = std::vector<float>(arrSize);
         std::iota(arrf.begin(), arrf.end(), 10);
-        sma::printArr(arrf);
-        sma::printArr(sma::simpleMovingAverage<float>(arrf, windowSize + 2));
+        sma::printArr<float>(arrf);
+        auto averagef = sma::simpleMovingAverage<float>(arrf, windowSize + 2);
+        sma::printArr<float>(averagef);
     }
     return 0;
 }
