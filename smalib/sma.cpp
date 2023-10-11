@@ -1,39 +1,32 @@
 #include "sma.h"
 
-/*
-template<std::floating_point T>
-std::vector<T> simpleMovingAverage(std::span<T> data, int windowSize) {
-    auto smaArr = std::vector<T>(data.size() - windowSize + 1);
-    T c = 1. / windowSize;
-    smaArr[0] = std::accumulate(data.begin(), data.begin() + windowSize, 0) * c;
+void sma::stdbm(int countAverage, int arrSize) {
+    auto floatArr = sma::generateArr<float>(arrSize);
+    auto doubleArr = sma::generateArr<double>(arrSize);
 
-    auto smaArrPrev = smaArr.begin();
-    auto dataPlus = data.begin() + windowSize;
-    auto dataMinus = data.begin();
-    for (T &t: std::span<T>(smaArr.begin() + 1, smaArr.end()))
-        t = *(smaArrPrev++) + (*(dataPlus++) - *(dataMinus++)) * c;
+    const int wSizes[6] = {4, 8, 16, 32, 64, 128};
+    std::vector<std::vector<long double>>bm(2, std::vector<long double>(6, 0));
 
-    return smaArr;
-}
+    for (int i = 0; i < 6; ++i) {
+        for (int j = countAverage; j; --j) {
+            auto start = std::chrono::high_resolution_clock::now();
+            sma::simpleMovingAverage<float>(floatArr, wSizes[i]);
+            auto end = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+            bm[0][i] += arrSize / duration.count();
 
-template<std::floating_point T>
-void printArr(std::vector<T> arr) {
-    if (arr.begin() == arr.end()) {
-        std::cout << "Vector is empty\n";
-        return;
+            start = std::chrono::high_resolution_clock::now();
+            sma::simpleMovingAverage<double>(doubleArr, wSizes[i]);
+            end = std::chrono::high_resolution_clock::now();
+            duration = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+            bm[1][i] += arrSize / duration.count();
+        }
     }
-    for (T t: arr)
-        std::cout << t << " ";
-    std::cout << '\n';
+    std::cout << "\n\t";
+    for (auto size : wSizes) std::cout << size << "\t\t";
+    std::cout << "\nfloat:";
+    for (auto t : bm[0]) std::cout << '\t' << t / countAverage;
+    std::cout << "\ndouble:";
+    for (auto t : bm[1]) std::cout << '\t' << t / countAverage;
+    std::cout << std::endl;
 }
-
-template<std::floating_point T>
-std::vector<T> generateArr(int len) {
-    auto arr = std::vector<T>(len);
-    std::random_device rd;
-    std::uniform_real_distribution<T> dist(0., 10.);
-    for (T &t: arr)
-        t = dist(rd);
-
-    return arr;
-}*/

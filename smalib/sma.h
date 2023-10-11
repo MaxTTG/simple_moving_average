@@ -24,6 +24,7 @@
 #include <span>
 #include <numeric>
 #include <random>
+#include <chrono>
 
 namespace sma {
     /**
@@ -81,6 +82,14 @@ namespace sma {
 
         return arr;
     }
+
+    /**
+     * Тест производительности
+     * Выводит количество обрабатываемых отсчетов в секунду
+     * @param countAverage количество прогонов для усреднение, по умолчанию = 100
+     * @param arrSize размер массива для прогона, по умолчанию 1_000_000
+     */
+    void stdbm(int countAverage = 100, int arrSize = 1000000);
 }
 
 #endif//SMA_TEST_TASK_SMA_H
